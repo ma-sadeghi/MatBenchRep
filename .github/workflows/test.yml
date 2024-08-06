@@ -1,0 +1,52 @@
+name: Build and Reproduce AMMExpressv2020
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          path: main
+
+      - name: Checkout matbench (to be patched)
+        uses: actions/checkout@v4
+        with:
+            repository: materialsproject/matbench
+            path: matbench
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.7
+
+      - name: Install uv for faster builds
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+
+      - name: Patch matbench==0.1.0 and install
+        run: |
+          cd matbench
+          git checkout v0.1.0
+          # Replace .strip() with .strip().strip('"') in setup.py to remove unnecessary quotes
+          sed -i 's/\.strip()/\.strip().strip(\x27\"\x27)/g' setup.py
+          uv pip install -e .
+
+      - name: Install dependencies
+        run: |
+          uv pip install  \
+            ruamel.yaml==0.17.2 \
+            automatminer==1.0.3.20200727 \
+            ipython \
+            ipykernel \
+            ipywidgets
+
+      - name: Test AMMExpressv2020
+        run: |
+          python -c "from automatminer import MatPipe; from matbench import MatbenchBenchmark"
