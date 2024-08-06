@@ -26,8 +26,8 @@ jobs:
         uses: actions/checkout@v4
         with:
             repository: materialsproject/matbench
-            fetch-depth: 0
-            path: mymatbench
+            fetch-depth: 0  # Fetch all tags
+            path: mymatbench  # Use different name to avoid import conflicts
 
       - name: Set up Python
         uses: actions/setup-python@v5
