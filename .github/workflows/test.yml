@@ -30,7 +30,7 @@ jobs:
       - name: Install uv for faster builds
         run: |
           curl -LsSf https://astral.sh/uv/install.sh | sh
-          uv pip install --system
+          uv pip install --system uv
 
       - name: Patch matbench==0.1.0 and install
         run: |
