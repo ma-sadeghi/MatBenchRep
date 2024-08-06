@@ -20,7 +20,7 @@ jobs:
         with:
             repository: materialsproject/matbench
             fetch-depth: 0  # Fetch all tags
-            path: matbench
+            path: mymatbench  # Use different name to avoid import conflicts
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -33,7 +33,7 @@ jobs:
 
       - name: Patch matbench==0.1.0 and install
         run: |
-          cd matbench
+          cd mymatbench
           git checkout v0.1.0
           # Replace .strip() with .strip().strip('"') in setup.py to remove unnecessary quotes
           sed -i 's/\.strip()/\.strip().strip(\x27\"\x27)/g' setup.py
