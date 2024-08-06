@@ -43,7 +43,7 @@ jobs:
           cd mymatbench
           git checkout v0.1.0
           # Use perl for cross-platform text replacement
-          perl -i -pe 's/\.strip\(\)/.strip().strip("\x27\"\x27")/g' setup.py
+          perl -i -pe 's/\.strip\(\)/.strip().strip(\x27\"\x27)/g' setup.py
           uv pip install --system -e .
 
       - name: Install dependencies
